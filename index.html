@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Ejecutivo - Noelia Segador</title>
+    <!-- Librería Chart.js para gráficos interactivos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --bg-ivory: #FDFBF7;
@@ -12,6 +14,10 @@
             --card-bg: #FFFFFF;
             --border-light: #EAE6DF;
             --success-green: #4A7C59;
+            --chart-color-1: #C89F53;
+            --chart-color-2: #2D2323;
+            --chart-color-3: #8C6D39;
+            --chart-color-4: #4A7C59;
         }
 
         * {
@@ -109,7 +115,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .kpi-card {
@@ -142,10 +148,30 @@
             font-weight: 500;
         }
 
-        .section-subtitle {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-container {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            height: 350px;
+            position: relative;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
             color: var(--text-espresso);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
         }
 
         /* Conclusion Text */
@@ -207,6 +233,13 @@
                     <div class="kpi-sub">Alta retención de navegación</div>
                 </div>
             </div>
+            
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Embudo de Tráfico Web (Octubre)</div>
+                    <canvas id="chartWebTraffic"></canvas>
+                </div>
+            </div>
         </div>
 
         <!-- FACEBOOK TAB -->
@@ -234,13 +267,18 @@
                     <div class="kpi-sub">Tráfico dirigido al perfil</div>
                 </div>
             </div>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Alcance vs Interacciones</div>
+                    <canvas id="chartFacebook"></canvas>
+                </div>
+            </div>
         </div>
 
         <!-- INSTAGRAM TAB -->
         <div id="instagram" class="tab-content">
             <h1 class="header-title">Rendimiento Instagram</h1>
-            
-            <h2 class="section-subtitle">Comunidad y Demografía</h2>
             <div class="kpi-grid">
                 <div class="kpi-card">
                     <div class="kpi-title">Seguidores Totales</div>
@@ -248,33 +286,25 @@
                     <div class="kpi-sub">+17 nuevos adquiridos</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-title">Perfil Principal</div>
-                    <div class="kpi-value">Mujeres</div>
-                    <div class="kpi-sub">Rango de edad 35-54 años</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-title">Top Ubicaciones</div>
-                    <div class="kpi-value">España</div>
-                    <div class="kpi-sub">Puente Genil, Málaga, Madrid</div>
-                </div>
-            </div>
-
-            <h2 class="section-subtitle">Impacto por Formato</h2>
-            <div class="kpi-grid">
-                <div class="kpi-card">
                     <div class="kpi-title">Reels (Engagement)</div>
                     <div class="kpi-value">20,83%</div>
-                    <div class="kpi-sub">252 vistas / 2 Reels publicados</div>
+                    <div class="kpi-sub">Palanca principal de atracción</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-title">Posts (Engagement)</div>
                     <div class="kpi-value">10,04%</div>
-                    <div class="kpi-sub">918 vistas / 4 Posts publicados</div>
+                    <div class="kpi-sub">Contenido de valor estático</div>
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-title">Stories (Impresiones)</div>
-                    <div class="kpi-value">706</div>
-                    <div class="kpi-sub">26,65 alcance medio por Story</div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Comparativa de Engagement (%)</div>
+                    <canvas id="chartIgEngagement"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Distribución por Edades</div>
+                    <canvas id="chartIgDemographics"></canvas>
                 </div>
             </div>
         </div>
@@ -284,32 +314,123 @@
             <h1 class="header-title">Conclusión de Informe - Octubre</h1>
             <div class="conclusion-box">
                 <p><strong>Octubre ha sido un mes de consolidación y alto impacto para la marca personal.</strong> Los datos demuestran que el ecosistema digital está perfectamente engranado y respondiendo a los estímulos estratégicos.</p>
-                
                 <p>En la <strong>web</strong>, hemos retenido fuertemente la atención: cada usuario que entra consume casi 5 páginas y media, lo que indica un interés profundo y cualificado por los servicios de coaching, sin rebotes superficiales.</p>
-
                 <p>En <strong>Facebook</strong>, a pesar de operar con una comunidad de seguidores reducida (37), la viralidad de los formatos nos ha permitido superar las 1.400 visualizaciones, manteniendo una tasa de engagement excelente del 13%.</p>
-
-                <p>La estrella absoluta del mes es <strong>Instagram</strong>. Hemos crecido de forma completamente orgánica y precisa, atrayendo exactamente al "buyer persona" que buscábamos: mujeres profesionales de España (con gran fuerza en Andalucía y Madrid) entre los 35 y 54 años. Además, los Reels han demostrado ser la palanca de conversión ideal, duplicando el engagement de las publicaciones tradicionales (20,83% vs 10,04%) y generando interacciones de alto valor como guardados y compartidos.</p>
-
+                <p>La estrella absoluta del mes es <strong>Instagram</strong>. Hemos crecido de forma completamente orgánica y precisa, atrayendo exactamente al "buyer persona" que buscábamos: mujeres profesionales de España entre los 35 y 54 años. Además, los Reels han demostrado ser la palanca de conversión ideal, duplicando el engagement de las publicaciones tradicionales (20,83% vs 10,04%) y generando interacciones de alto valor como guardados y compartidos.</p>
                 <p><strong>El veredicto:</strong> La estrategia de contenidos conecta emocionalmente, la audiencia es 100% de calidad, y la infraestructura está preparada para escalar. Es el momento de inyectar más recurrencia en Reels para acelerar la captación.</p>
             </div>
         </div>
     </div>
 
     <script>
+        // Configuración Global de Gráficos para mantener el estilo ejecutivo
+        Chart.defaults.color = '#2D2323';
+        Chart.defaults.font.family = "'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+
+        let webChartInst, fbChartInst, igEngChartInst, igDemoChartInst;
+
+        function initCharts() {
+            // 1. Gráfico Web (Embudo de barras)
+            const ctxWeb = document.getElementById('chartWebTraffic').getContext('2d');
+            webChartInst = new Chart(ctxWeb, {
+                type: 'bar',
+                data: {
+                    labels: ['Páginas Vistas', 'Visitas Totales', 'Visitantes Únicos'],
+                    datasets: [{
+                        label: 'Métricas',
+                        data: [1402, 321, 261],
+                        backgroundColor: ['#C89F53', '#8C6D39', '#2D2323'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // 2. Gráfico Facebook (Donut)
+            const ctxFb = document.getElementById('chartFacebook').getContext('2d');
+            fbChartInst = new Chart(ctxFb, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Vistas de Contenido', 'Visitas al Perfil'],
+                    datasets: [{
+                        data: [1406, 18],
+                        backgroundColor: ['#C89F53', '#2D2323'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            // 3. Gráfico Instagram - Engagement (Barras Horizontales)
+            const ctxIgEng = document.getElementById('chartIgEngagement').getContext('2d');
+            igEngChartInst = new Chart(ctxIgEng, {
+                type: 'bar',
+                data: {
+                    labels: ['Reels', 'Posts Clásicos', 'Stories (Alcance)'],
+                    datasets: [{
+                        label: 'Engagement / Tasa %',
+                        data: [20.83, 10.04, 26.65],
+                        backgroundColor: ['#4A7C59', '#C89F53', '#8C6D39'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // Hace las barras horizontales
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // 4. Gráfico Instagram - Demografía (Polar Area o Pie)
+            const ctxIgDemo = document.getElementById('chartIgDemographics').getContext('2d');
+            igDemoChartInst = new Chart(ctxIgDemo, {
+                type: 'pie',
+                data: {
+                    labels: ['25-34 años', '35-44 años', '45-54 años', '55+ años'],
+                    datasets: [{
+                        data: [20, 35, 33, 12], // Aproximación visual basada en tu gráfica
+                        backgroundColor: ['#EAE6DF', '#C89F53', '#8C6D39', '#2D2323'],
+                        borderWidth: 1,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right' } }
+                }
+            });
+        }
+
+        // Sistema de Pestañas
         function openTab(tabId) {
-            // Ocultar todas las pestañas
+            // Ocultar todas
             const tabs = document.querySelectorAll('.tab-content');
             tabs.forEach(tab => tab.classList.remove('active'));
 
-            // Quitar clase active de todos los botones
+            // Quitar clase de botones
             const btns = document.querySelectorAll('.nav-btn');
             btns.forEach(btn => btn.classList.remove('active'));
 
-            // Mostrar la pestaña seleccionada y marcar el botón
+            // Activar la seleccionada
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
         }
+
+        // Cargar gráficos al iniciar la página
+        window.onload = function() {
+            initCharts();
+        };
     </script>
 </body>
 </html>
